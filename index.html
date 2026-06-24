@@ -128,7 +128,7 @@ const keys = {};
 document.addEventListener('keydown', e => {
   keys[e.code] = true;
   if(['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
-  if(e.code==='KeyR' && ['playing','dead'].includes(state)){ tries=0; initLevel(currentLevel); }
+  if(e.code==='KeyR' && ['playing','dead'].includes(state)){ state='start'; }
 });
 document.addEventListener('keyup', e => {
   keys[e.code]=false;
@@ -136,7 +136,7 @@ document.addEventListener('keyup', e => {
 });
 
 // ── State ────────────────────────────────────────────────
-let state='start', currentLevel=1, tries=0, particles=[], deathTimer=0, cameraX=0;
+let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], deathTimer=0, cameraX=0;
 const TOTAL=100;
 
 function setHud(on){
@@ -678,8 +678,7 @@ function drawStartScreen(){
   const bx=W/2-bw/2;
   drawBtn(bx,382,bw,bh,'▶  SPIELEN','#27ae60');
   addBtn(bx,382,bw,bh,()=>{
-    currentLevel=Math.max(1,save.level); tries=0;
-    setHud(true); initLevel(currentLevel);
+    tries=0; setHud(true); initLevel(currentLevel);
   });
   drawBtn(bx,452,bw,bh,'🏪  SHOP','#1565c0');
   addBtn(bx,452,bw,bh,()=>{ state='shop'; });

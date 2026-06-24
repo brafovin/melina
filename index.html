@@ -428,7 +428,7 @@ function die(){
   updateHUD();
   spawnParticles(player.x+PW/2,player.y+PH/2,'#ff4444',16);
   deathQuote=MOTIV_QUOTES[Math.floor(Math.random()*MOTIV_QUOTES.length)];
-  state='dead'; deathTimer=40;
+  state='dead'; deathTimer=180;
 }
 
 function completeLevel(){
@@ -450,7 +450,7 @@ function spikeBoxes(s){return Array.from({length:s.n},(_,i)=>({x:s.x+i*SW,y:s.y-
 
 // ── Update ────────────────────────────────────────────────
 function update(){
-  if(state==='dead'){if(deathTimer>0)deathTimer--;return;}
+  if(state==='dead'){if(deathTimer>0){deathTimer--;}else{initLevel(currentLevel);}return;}
   if(state!=='playing') return;
   const lvl=levelData;
 
@@ -1611,8 +1611,18 @@ function drawDeathScreen(){
   ctx.fillText('▶  Nochmal spielen',W/2,by+29);
   addBtn(bx,by,bw,bh,()=>initLevel(currentLevel));
   // Hint
-  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='14px Segoe UI,Arial';
-  ctx.fillText('oder Leertaste drücken',W/2,by+bh+22);
+  // Countdown ring
+  const secs=Math.ceil(deathTimer/60)||1;
+  const prog=deathTimer/150;
+  const rx=W/2, ry=by+bh+28, rr=16;
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.arc(rx,ry,rr,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle='#FF7043'; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.arc(rx,ry,-Math.PI/2,-Math.PI/2+prog*Math.PI*2,false); ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold 13px Segoe UI,Arial';
+  ctx.fillText(`${secs}`,rx,ry+5);
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='12px Segoe UI,Arial';
+  ctx.fillText('Weiter in ...',rx,ry+rr+16);
   ctx.textAlign='left';
 }
 
@@ -1651,7 +1661,7 @@ function draw(){
   ctx.fillText(`Level ${currentLevel} / ${TOTAL}`,16,27);
   drawProgressBar();
 
-  if(state==='dead'&&deathTimer<=0) drawDeathScreen();
+  if(state==='dead'&&deathTimer<150) drawDeathScreen();
   if(state==='nextLevel') drawOverlay('Level geschafft! 🎉',`+${lastReward} Münzen  •  Nächstes Level lädt...`,'#FFD700');
   if(state==='win')       drawOverlay('Glückwunsch!','Alle 500 Level gemeistert!  Drücke R','#FFD700');
 }

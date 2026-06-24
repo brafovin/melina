@@ -257,7 +257,7 @@ let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], d
 let shopTab='hats';
 const shopScroll={hats:0,skins:0,clothing:0,pets:0};
 const shopScrollMax={hats:0,skins:0,clothing:0,pets:0};
-const TOTAL=100;
+const TOTAL=500;
 
 function setHud(on){
   document.getElementById('hud').style.display = on?'flex':'none';
@@ -1653,7 +1653,7 @@ function draw(){
 
   if(state==='dead'&&deathTimer<=0) drawDeathScreen();
   if(state==='nextLevel') drawOverlay('Level geschafft! 🎉',`+${lastReward} Münzen  •  Nächstes Level lädt...`,'#FFD700');
-  if(state==='win')       drawOverlay('Glückwunsch!','Alle 100 Level gemeistert!  Drücke R','#FFD700');
+  if(state==='win')       drawOverlay('Glückwunsch!','Alle 500 Level gemeistert!  Drücke R','#FFD700');
 }
 
 // ── Loop ─────────────────────────────────────────────────

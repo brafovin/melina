@@ -1618,7 +1618,7 @@ function drawDeathScreen(){
   ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=4;
   ctx.beginPath(); ctx.arc(rx,ry,rr,0,Math.PI*2); ctx.stroke();
   ctx.strokeStyle='#FF7043'; ctx.lineWidth=4;
-  ctx.beginPath(); ctx.arc(rx,ry,-Math.PI/2,-Math.PI/2+prog*Math.PI*2,false); ctx.stroke();
+  ctx.beginPath(); ctx.arc(rx,ry,rr,-Math.PI/2,-Math.PI/2+prog*Math.PI*2,false); ctx.stroke();
   ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold 13px Segoe UI,Arial';
   ctx.fillText(`${secs}`,rx,ry+5);
   ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='12px Segoe UI,Arial';
@@ -1667,7 +1667,7 @@ function draw(){
 }
 
 // ── Loop ─────────────────────────────────────────────────
-function loop(){ update(); draw(); requestAnimationFrame(loop); }
+function loop(){ try{update();draw();}catch(e){console.error(e);} requestAnimationFrame(loop); }
 loop();
 </script>
 </body>

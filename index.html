@@ -157,6 +157,23 @@ const CLOTHING = [
   { id:'wikinger_out',name:'Wikinger-Rüstung',price:700, c1:'#5d4037', c2:'#795548' },
 ];
 
+// ── Motivational quotes ───────────────────────────────────
+const MOTIV_QUOTES = [
+  'Du schaffst das! 💪',
+  'Jeder Held fällt mal hin!',
+  'Übung macht den Meister!',
+  'Nicht aufgeben — du bist nah dran!',
+  'Steh auf und versuch es nochmal!',
+  'Fehler machen uns stärker!',
+  'Das nächste Mal klappt es bestimmt!',
+  'Gib niemals auf!',
+  'Jeder Versuch bringt dich weiter!',
+  'Du bist stärker als du denkst!',
+  'Nur wer wagt, der gewinnt!',
+  'Kein Meister fiel vom Himmel!',
+];
+let deathQuote = '';
+
 // ── Save / Load ───────────────────────────────────────────
 let save = { coins:0, owned:['none','kinderhut'], hat:'kinderhut', level:1, skin:'standard', ownedSkins:['standard'], clothing:'none', ownedClothing:['none'] };
 function loadSave() {
@@ -206,6 +223,7 @@ document.addEventListener('keydown', e => {
     return;
   }
   if(['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
+  if(e.code==='Space'&&state==='dead'&&deathTimer<=0){ initLevel(currentLevel); return; }
   if(e.code==='KeyR' && ['playing','dead'].includes(state)){ state='start'; }
 });
 document.addEventListener('keyup', e => {
@@ -378,12 +396,13 @@ function die(){
   player.dead=true; tries++;
   updateHUD();
   spawnParticles(player.x+PW/2,player.y+PH/2,'#ff4444',16);
-  state='dead'; deathTimer=85;
+  deathQuote=MOTIV_QUOTES[Math.floor(Math.random()*MOTIV_QUOTES.length)];
+  state='dead'; deathTimer=40;
 }
 
 function completeLevel(){
   if(currentLevel>save.level){ save.level=currentLevel; }
-  lastReward=3+Math.floor(Math.random()*3);
+  lastReward=1+Math.floor(Math.random()*5);
   save.coins+=lastReward;
   writeSave();
   spawnParticles(levelData.goal.flagX,GY-100,'#FFD700',32);
@@ -400,7 +419,7 @@ function spikeBoxes(s){return Array.from({length:s.n},(_,i)=>({x:s.x+i*SW,y:s.y-
 
 // ── Update ────────────────────────────────────────────────
 function update(){
-  if(state==='dead'){if(--deathTimer<=0)initLevel(currentLevel);return;}
+  if(state==='dead'){if(deathTimer>0)deathTimer--;return;}
   if(state!=='playing') return;
   const lvl=levelData;
 
@@ -1177,6 +1196,90 @@ function drawShopScreen(){
   ctx.textAlign='left';
 }
 
+function drawDeathScreen(){
+  uiTargets=[];
+  ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillRect(0,0,W,H);
+
+  // Crying figure (scaled up, centered)
+  const fcx=W/2, fcy=220;
+  const sc=2.3;
+  const sd=SKINS.find(s=>s.id===(save.skin||'standard'))||SKINS[0];
+  const headR=9;
+  const hcy=-10, hneck=hcy+headR, hwaist=hneck+14, hfoot=19;
+
+  ctx.save();
+  ctx.translate(fcx,fcy);
+  ctx.scale(sc,sc);
+  ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=2.5;
+  ctx.strokeStyle=sd.stroke;
+
+  // Legs (drooping)
+  ctx.beginPath();
+  ctx.moveTo(0,hwaist); ctx.lineTo(-8,hfoot);
+  ctx.moveTo(0,hwaist); ctx.lineTo(8,hfoot);
+  ctx.stroke();
+  // Body
+  ctx.beginPath(); ctx.moveTo(0,hneck); ctx.lineTo(0,hwaist); ctx.stroke();
+  // Arms hanging down
+  ctx.beginPath();
+  ctx.moveTo(0,hneck+4); ctx.lineTo(-13,hwaist+2);
+  ctx.moveTo(0,hneck+4); ctx.lineTo(13,hwaist+2);
+  ctx.stroke();
+  // Clothing
+  if(save.clothing&&save.clothing!=='none'&&save.clothing!=='cape')
+    drawClothing(0,hneck,hwaist,save.clothing,1);
+  // Head
+  ctx.fillStyle=sd.head;
+  ctx.beginPath(); ctx.arc(0,hcy,headR,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  // Hat
+  if(save.hat&&save.hat!=='none') drawHat(0,hcy,headR,save.hat);
+  // Dot eyes
+  ctx.fillStyle=sd.stroke;
+  ctx.beginPath(); ctx.arc(-3.5,hcy-1,1.8,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(3.5,hcy-1,1.8,0,Math.PI*2); ctx.fill();
+  // Tear streaks
+  ctx.strokeStyle='#66ddff'; ctx.lineWidth=1.4;
+  ctx.beginPath();
+  ctx.moveTo(-3.5,hcy+2); ctx.bezierCurveTo(-4,hcy+5,-4.5,hcy+8,-3,hcy+12);
+  ctx.moveTo(3.5,hcy+2); ctx.bezierCurveTo(4,hcy+5,4.5,hcy+8,3,hcy+12);
+  ctx.stroke();
+  // Sad mouth (downward arc)
+  ctx.strokeStyle=sd.stroke; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(1,hcy+3.5,3.5,0.2,Math.PI-0.2,true); ctx.stroke();
+  // Animated tear drops
+  const t=Date.now()/500;
+  for(let i=0;i<2;i++){
+    const tx=(i===0?-3.5:3.5);
+    const phase=(t+i*0.5)%1;
+    const ty=hcy+12+phase*24;
+    ctx.globalAlpha=1-phase;
+    ctx.fillStyle='#66ddff';
+    ctx.beginPath(); ctx.ellipse(tx,ty,1.8,3,0,0,Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  ctx.restore();
+
+  // "Nochmal!" title
+  const textY=fcy+hfoot*sc+46;
+  ctx.textAlign='center';
+  ctx.fillStyle='#FF7043'; ctx.font='bold 50px Segoe UI,Arial';
+  ctx.fillText('Nochmal!',W/2,textY);
+  // Motivational quote
+  ctx.fillStyle='rgba(255,255,255,0.82)'; ctx.font='19px Segoe UI,Arial';
+  ctx.fillText(deathQuote,W/2,textY+38);
+  // Button
+  const bw=230,bh=44,bx=W/2-115,by=textY+60;
+  ctx.fillStyle='#FF7043';
+  ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,10); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 19px Segoe UI,Arial';
+  ctx.fillText('▶  Nochmal spielen',W/2,by+29);
+  addBtn(bx,by,bw,bh,()=>initLevel(currentLevel));
+  // Hint
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='14px Segoe UI,Arial';
+  ctx.fillText('oder Leertaste drücken',W/2,by+bh+22);
+  ctx.textAlign='left';
+}
+
 function drawOverlay(msg,sub,col){
   ctx.fillStyle='rgba(0,0,0,0.65)'; ctx.fillRect(0,0,W,H);
   ctx.textAlign='center';
@@ -1211,7 +1314,7 @@ function draw(){
   ctx.fillText(`Level ${currentLevel} / ${TOTAL}`,16,27);
   drawProgressBar();
 
-  if(state==='dead')      drawOverlay('Nochmal!','Respawn in Kürze...','#FF7043');
+  if(state==='dead'&&deathTimer<=0) drawDeathScreen();
   if(state==='nextLevel') drawOverlay('Level geschafft! 🎉',`+${lastReward} Münzen  •  Nächstes Level lädt...`,'#FFD700');
   if(state==='win')       drawOverlay('Glückwunsch!','Alle 100 Level gemeistert!  Drücke R','#FFD700');
 }

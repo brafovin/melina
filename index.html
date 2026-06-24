@@ -173,10 +173,20 @@ function generateLevel(n) {
     platforms.push({x:nx, y:ny, w:pw, h:14, c:'#4e342e'});
     cx = nx+pw; cy = ny;
   }
-  // Guarantee a bridge platform close to the end so it's always reachable
-  if (cx < endGX - 80) {
-    const bridgeY = Math.min(cy + 50, GY - 20);
-    platforms.push({x: endGX - 110, y: bridgeY, w: 95, h: 14, c: '#4e342e'});
+
+  // Guaranteed approach chain: fill remaining gap to end-ground with safe platforms.
+  // Each step is at most 68px gap + 85px platform → always jumpable.
+  // Gradually descends toward ground level so the player can walk onto the end.
+  {
+    const STEP_GAP = 68;
+    const STEP_W   = 85;
+    let ax = cx, ay = cy;
+    while (ax + STEP_GAP + STEP_W < endGX - 6) {
+      ax += STEP_GAP;
+      ay  = Math.min(ay + 28, GY - 22); // step down gently
+      platforms.push({x: ax, y: ay, w: STEP_W, h: 14, c: '#5d4037'});
+      ax += STEP_W;
+    }
   }
 
   // ── Spikes: on TOP of mid-platforms (not on the ground) ─

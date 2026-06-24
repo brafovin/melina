@@ -160,14 +160,14 @@ const CLOTHING = [
 // ── Save / Load ───────────────────────────────────────────
 let save = { coins:0, owned:['none','kinderhut'], hat:'kinderhut', level:1, skin:'standard', ownedSkins:['standard'], clothing:'none', ownedClothing:['none'] };
 function loadSave() {
-  try { const r=localStorage.getItem('strichSave'); if(r) Object.assign(save,JSON.parse(r)); } catch(e){}
+  try { const r=localStorage.getItem('strichSave2'); if(r) Object.assign(save,JSON.parse(r)); } catch(e){}
   if(!save.skin) save.skin='standard';
   if(!save.ownedSkins||!save.ownedSkins.length) save.ownedSkins=['standard'];
   if(!save.clothing) save.clothing='none';
   if(!save.ownedClothing||!save.ownedClothing.length) save.ownedClothing=['none'];
 }
 function writeSave() {
-  try { localStorage.setItem('strichSave',JSON.stringify(save)); } catch(e){}
+  try { localStorage.setItem('strichSave2',JSON.stringify(save)); } catch(e){}
 }
 loadSave();
 
@@ -214,7 +214,7 @@ document.addEventListener('keyup', e => {
 });
 
 // ── State ────────────────────────────────────────────────
-let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], deathTimer=0, cameraX=0;
+let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], deathTimer=0, cameraX=0, lastReward=0;
 let shopTab='hats';
 const shopScroll={hats:0,skins:0,clothing:0};
 const shopScrollMax={hats:0,skins:0,clothing:0};
@@ -258,7 +258,7 @@ function generateLevel(n){
   ];
   const sky=skies[Math.min(Math.floor((n-1)/5),skies.length-1)];
 
-  const platforms=[],spikes=[],enemies=[],movingPlats=[],coins=[];
+  const platforms=[],spikes=[],enemies=[],movingPlats=[];
   const startGW=150, endGX=LW-130;
   platforms.push({x:0,y:GY,w:startGW,h:48,c:'#5d4037'});
   platforms.push({x:endGX,y:GY,w:LW-endGX,h:48,c:'#5d4037'});
@@ -285,17 +285,6 @@ function generateLevel(n){
       platforms.push({x:ax,y:ay,w:85,h:14,c:'#5d4037'});
       ax+=85;
     }
-  }
-
-  // Coins above mid-platforms (avoid start/end ground)
-  const midPlats=platforms.filter(p=>p.h===14 && p.w>=40);
-  const numCoins=6+Math.floor(d*9);
-  for(let i=0;i<numCoins*3&&coins.length<numCoins;i++){
-    if(!midPlats.length) break;
-    const p=midPlats[Math.floor(rng()*midPlats.length)];
-    const cx2=p.x+12+rng()*(p.w-24);
-    if(!coins.some(c=>Math.abs(c.x-cx2)<22))
-      coins.push({x:cx2, y:p.y-28, collected:false});
   }
 
   // Spikes on platforms (level 8+)
@@ -344,13 +333,13 @@ function generateLevel(n){
     }
   }
 
-  const lvl={sky,platforms,spikes,enemies,movingPlatforms:movingPlats,coins,
+  const lvl={sky,platforms,spikes,enemies,movingPlatforms:movingPlats,
     goal:{x:endGX,y:-200,w:LW-endGX,h:H+400,flagX:endGX+55},
     start:{x:30,y:GY-PH-2}};
   LCACHE[n]=lvl; return lvl;
 }
 
-let levelData=null,levelEnemies=[],levelMovPlat=[],levelCoins=[];
+let levelData=null,levelEnemies=[],levelMovPlat=[];
 
 function overlap(ax,ay,aw,ah,bx,by,bw,bh){return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by;}
 function spawnParticles(x,y,col,n){
@@ -365,7 +354,6 @@ function initLevel(n){
   levelData=lvl;
   levelEnemies=lvl.enemies.map(e=>({...e}));
   levelMovPlat=lvl.movingPlatforms.map(p=>({...p}));
-  levelCoins=lvl.coins.map(c=>({...c}));
   particles=[]; deathTimer=0; cameraX=0;
   player.x=lvl.start.x; player.y=lvl.start.y;
   player.vx=player.vy=0;
@@ -394,8 +382,12 @@ function die(){
 }
 
 function completeLevel(){
-  if(currentLevel>save.level){ save.level=currentLevel; writeSave(); }
+  if(currentLevel>save.level){ save.level=currentLevel; }
+  lastReward=3+Math.floor(Math.random()*3);
+  save.coins+=lastReward;
+  writeSave();
   spawnParticles(levelData.goal.flagX,GY-100,'#FFD700',32);
+  updateHUD();
   state='nextLevel';
   setTimeout(()=>{
     if(currentLevel>=TOTAL){state='win';return;}
@@ -487,15 +479,6 @@ function update(){
         e.alive=false; player.vy=JUMP2_VY*0.85;
         spawnParticles(e.x+e.w/2,e.y+e.h/2,'#FF5722',12);
       } else {die();return;}
-    }
-  }
-
-  // Coin collection
-  for(const c of levelCoins){
-    if(!c.collected&&overlap(player.x,player.y,PW,PH,c.x-10,c.y-10,20,20)){
-      c.collected=true; save.coins++; writeSave();
-      spawnParticles(c.x,c.y,'#FFD700',8);
-      updateHUD();
     }
   }
 
@@ -912,19 +895,6 @@ function drawEnemy(e){
   ctx.moveTo(cx,top+22);ctx.lineTo(cx-6,top+30); ctx.moveTo(cx,top+22);ctx.lineTo(cx+6,top+30); ctx.stroke();
 }
 
-function drawCoin(c){
-  if(c.collected) return;
-  const bob=Math.sin(Date.now()/320+c.x*0.01)*3;
-  const cy=c.y+bob;
-  // Outer
-  ctx.fillStyle='#FFD700'; ctx.beginPath(); ctx.arc(c.x,cy,9,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#F9A825'; ctx.beginPath(); ctx.arc(c.x,cy,6,0,Math.PI*2); ctx.fill();
-  // Label
-  ctx.fillStyle='#FFD700'; ctx.font='bold 8px Arial'; ctx.textAlign='center'; ctx.fillText('M',c.x,cy+3); ctx.textAlign='left';
-  // Shine
-  ctx.fillStyle='rgba(255,255,255,0.55)';
-  ctx.beginPath(); ctx.ellipse(c.x-3,cy-3,2.5,1.5,-0.5,0,Math.PI*2); ctx.fill();
-}
 
 function drawGoal(g){
   const px=g.flagX;
@@ -1228,7 +1198,6 @@ function draw(){
   ctx.translate(-Math.round(cameraX),0);
   for(const p of [...lvl.platforms,...levelMovPlat]) drawPlatform(p);
   for(const s of lvl.spikes) drawSpikes(s);
-  for(const c of levelCoins) drawCoin(c);
   drawGoal(lvl.goal);
   for(const e of levelEnemies) drawEnemy(e);
   const blink=player.dead&&Math.floor(Date.now()/130)%2===0;
@@ -1243,7 +1212,7 @@ function draw(){
   drawProgressBar();
 
   if(state==='dead')      drawOverlay('Nochmal!','Respawn in Kürze...','#FF7043');
-  if(state==='nextLevel') drawOverlay('Level geschafft! 🎉','Nächstes Level lädt...','#FFD700');
+  if(state==='nextLevel') drawOverlay('Level geschafft! 🎉',`+${lastReward} Münzen  •  Nächstes Level lädt...`,'#FFD700');
   if(state==='win')       drawOverlay('Glückwunsch!','Alle 100 Level gemeistert!  Drücke R','#FFD700');
 }
 

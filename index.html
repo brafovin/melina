@@ -244,7 +244,7 @@ document.addEventListener('keydown', e => {
     return;
   }
   if(['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
-  if(e.code==='Space'&&state==='dead'&&deathTimer<=0){ initLevel(currentLevel); return; }
+  if((e.code==='Space'||e.code==='Enter')&&state==='dead'){ initLevel(currentLevel); return; }
   if(e.code==='KeyR' && ['playing','dead'].includes(state)){ state='start'; }
 });
 document.addEventListener('keyup', e => {
@@ -1622,7 +1622,7 @@ function drawDeathScreen(){
   ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.font='bold 13px Segoe UI,Arial';
   ctx.fillText(`${secs}`,rx,ry+5);
   ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='12px Segoe UI,Arial';
-  ctx.fillText('Weiter in ...',rx,ry+rr+16);
+  ctx.fillText('Enter / Leertaste für sofort',rx,ry+rr+16);
   ctx.textAlign='left';
 }
 

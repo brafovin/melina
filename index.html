@@ -86,33 +86,45 @@ const JBUF_MAX   = 10;
 
 // ── Hats ─────────────────────────────────────────────────
 const HATS = [
-  { id:'none',      name:'Kein Hut',       price:0    },
-  { id:'kinderhut', name:'Kinderhut',      price:0    },
-  { id:'cowboy',    name:'Cowboyhut',      price:60   },
-  { id:'zauber',    name:'Zauberhut',      price:180  },
-  { id:'krone',     name:'Krone',          price:400  },
-  { id:'wikinger',  name:'Wikingerhut',    price:800  },
-  { id:'astronaut', name:'Raumhelm',       price:1800 },
+  { id:'none',      name:'Kein Hut',    price:0    },
+  { id:'kinderhut', name:'Kinderhut',   price:0    },
+  { id:'cowboy',    name:'Cowboyhut',   price:60   },
+  { id:'baseball',  name:'Baseballkappe',price:80  },
+  { id:'xmas',      name:'Weihnachtsmütze',price:90},
+  { id:'detektiv',  name:'Detektivhut', price:160  },
+  { id:'zauber',    name:'Zauberhut',   price:180  },
+  { id:'tophat',    name:'Zylinder',    price:220  },
+  { id:'piraten',   name:'Piratenhut',  price:300  },
+  { id:'krone',     name:'Krone',       price:400  },
+  { id:'wikinger',  name:'Wikingerhut', price:800  },
+  { id:'astronaut', name:'Raumhelm',    price:1800 },
 ];
 
 const SKINS = [
-  { id:'standard', name:'Standard',  price:0,   stroke:'#111',    head:'#fff',    face:'#111' },
-  { id:'rot',      name:'Rot',       price:50,  stroke:'#c0392b', head:'#ff8a80', face:'#7f0000' },
-  { id:'blau',     name:'Blau',      price:50,  stroke:'#1a6fc4', head:'#90caf9', face:'#0d47a1' },
-  { id:'gruen',    name:'Grün',      price:50,  stroke:'#2e7d32', head:'#a5d6a7', face:'#1b5e20' },
-  { id:'lila',     name:'Lila',      price:80,  stroke:'#6a1b9a', head:'#ce93d8', face:'#4a148c' },
-  { id:'orange',   name:'Orange',    price:80,  stroke:'#e65100', head:'#ffcc80', face:'#bf360c' },
-  { id:'gold',     name:'Gold',      price:200, stroke:'#b8860b', head:'#FFD700', face:'#e65100' },
-  { id:'dunkel',   name:'Dunkel',    price:150, stroke:'#263238', head:'#546e7a', face:'#102027' },
+  { id:'standard',   name:'Standard',   price:0,   stroke:'#111',    head:'#fff',    face:'#111' },
+  { id:'rot',        name:'Rot',        price:50,  stroke:'#c0392b', head:'#ff8a80', face:'#7f0000' },
+  { id:'blau',       name:'Blau',       price:50,  stroke:'#1a6fc4', head:'#90caf9', face:'#0d47a1' },
+  { id:'gruen',      name:'Grün',       price:50,  stroke:'#2e7d32', head:'#a5d6a7', face:'#1b5e20' },
+  { id:'pink',       name:'Pink',       price:60,  stroke:'#ad1457', head:'#f48fb1', face:'#880e4f' },
+  { id:'cyan',       name:'Türkis',     price:70,  stroke:'#00838f', head:'#80deea', face:'#006064' },
+  { id:'lila',       name:'Lila',       price:80,  stroke:'#6a1b9a', head:'#ce93d8', face:'#4a148c' },
+  { id:'orange',     name:'Orange',     price:80,  stroke:'#e65100', head:'#ffcc80', face:'#bf360c' },
+  { id:'neon',       name:'Neongrün',   price:120, stroke:'#558b2f', head:'#ccff90', face:'#33691e' },
+  { id:'dunkel',     name:'Dunkel',     price:150, stroke:'#263238', head:'#546e7a', face:'#102027' },
+  { id:'gold',       name:'Gold',       price:200, stroke:'#b8860b', head:'#FFD700', face:'#e65100' },
+  { id:'regenbogen', name:'Regenbogen', price:500, stroke:'#111',    head:'#fff',    face:'#111' },
 ];
 
 const CLOTHING = [
-  { id:'none',   name:'Kein Outfit', price:0 },
-  { id:'tshirt', name:'T-Shirt',     price:40,  c1:'#2196f3', c2:'#1565c0' },
-  { id:'jacke',  name:'Jacke',       price:100, c1:'#c62828', c2:'#7f0000' },
-  { id:'anzug',  name:'Anzug',       price:220, c1:'#424242', c2:'#212121' },
-  { id:'cape',   name:'Cape',        price:350, c1:'#7b1fa2', c2:'#4a148c' },
-  { id:'sport',  name:'Sportanzug',  price:480, c1:'#00897b', c2:'#004d40' },
+  { id:'none',     name:'Kein Outfit', price:0 },
+  { id:'tshirt',   name:'T-Shirt',     price:40,  c1:'#2196f3', c2:'#1565c0' },
+  { id:'hoodie',   name:'Hoodie',      price:70,  c1:'#546e7a', c2:'#263238' },
+  { id:'jacke',    name:'Jacke',       price:100, c1:'#c62828', c2:'#7f0000' },
+  { id:'kleid',    name:'Kleid',       price:140, c1:'#e91e63', c2:'#880e4f' },
+  { id:'sport',    name:'Sportanzug',  price:200, c1:'#00897b', c2:'#004d40' },
+  { id:'anzug',    name:'Anzug',       price:280, c1:'#424242', c2:'#212121' },
+  { id:'cape',     name:'Cape',        price:350, c1:'#7b1fa2', c2:'#4a148c' },
+  { id:'ruestung', name:'Rüstung',     price:600, c1:'#78909c', c2:'#37474f' },
 ];
 
 // ── Save / Load ───────────────────────────────────────────
@@ -481,6 +493,48 @@ function drawHat(cx,headCY,headR,hatId){
       ctx.beginPath(); ctx.ellipse(cx-2,top-10,5,3,-0.3,0,Math.PI*2); ctx.fill();
       break;
     }
+    case 'baseball':{
+      ctx.fillStyle='#e53935';
+      ctx.beginPath(); ctx.arc(cx-1,top-6,13,Math.PI,0); ctx.lineTo(cx+12,top+2); ctx.lineTo(cx-14,top+2); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#b71c1c'; ctx.beginPath(); ctx.arc(cx-1,top-18,2.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#e53935'; ctx.beginPath(); ctx.ellipse(cx+8,top+3,13,4,0.2,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.fillRect(cx-10,top-5,4,8);
+      break;
+    }
+    case 'xmas':{
+      const gx=ctx.createLinearGradient(cx,top+3,cx+4,top-28);
+      gx.addColorStop(0,'#c62828'); gx.addColorStop(1,'#ff1744');
+      ctx.fillStyle=gx;
+      ctx.beginPath(); ctx.moveTo(cx-11,top+4); ctx.lineTo(cx+6,top-27); ctx.lineTo(cx+14,top+4); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.ellipse(cx+1,top+4,14,5,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx+6,top-27,4.5,0,Math.PI*2); ctx.fill();
+      break;
+    }
+    case 'detektiv':{
+      ctx.fillStyle='#5d4037';
+      ctx.beginPath(); ctx.ellipse(cx,top+2,18,5,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx-10,top+2); ctx.lineTo(cx-8,top-14);
+      ctx.quadraticCurveTo(cx,top-20,cx+8,top-14); ctx.lineTo(cx+10,top+2); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#3e2723'; ctx.fillRect(cx-9,top-3,18,3);
+      ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.beginPath(); ctx.ellipse(cx-2,top-10,3,2,-0.3,0,Math.PI*2); ctx.fill();
+      break;
+    }
+    case 'tophat':{
+      ctx.fillStyle='#111';
+      ctx.beginPath(); ctx.ellipse(cx,top+2,17,5,0,0,Math.PI*2); ctx.fill();
+      ctx.fillRect(cx-10,top-22,20,24);
+      ctx.fillStyle='#c0392b'; ctx.fillRect(cx-10,top-2,20,3);
+      ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillRect(cx-8,top-20,3,18);
+      break;
+    }
+    case 'piraten':{
+      ctx.fillStyle='#1a1a2e';
+      ctx.beginPath(); ctx.moveTo(cx-16,top+1); ctx.lineTo(cx,top-26); ctx.lineTo(cx+16,top+1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.fillRect(cx-14,top-1,28,3);
+      ctx.fillStyle='#fff'; ctx.font='bold 9px Arial'; ctx.textAlign='center';
+      ctx.fillText('☠',cx,top-8); ctx.textAlign='left';
+      break;
+    }
     case 'zauber':{
       ctx.fillStyle='#3a007a';
       ctx.beginPath(); ctx.moveTo(cx-13,top+3); ctx.lineTo(cx,top-34); ctx.lineTo(cx+13,top+3); ctx.closePath(); ctx.fill();
@@ -564,6 +618,33 @@ function drawClothing(cx,neck,waist,clothingId,facing){
       ctx.fillStyle=cl.c1;
       ctx.beginPath(); ctx.moveTo(cx-7,neck+2); ctx.lineTo(cx+7,neck+2); ctx.lineTo(cx+6,waist-1); ctx.lineTo(cx-6,waist-1); ctx.closePath(); ctx.fill();
       ctx.fillStyle=cl.c2; ctx.fillRect(cx+4,neck+2,2,waist-neck-3); ctx.fillRect(cx-6,neck+2,2,waist-neck-3);
+      break;
+    }
+    case 'hoodie':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath(); ctx.arc(cx,neck-1,8,Math.PI,0); ctx.lineTo(cx+8,neck+5); ctx.lineTo(cx-8,neck+5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c1; ctx.beginPath(); ctx.arc(cx,neck+1,5,Math.PI,0); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.beginPath(); ctx.roundRect(cx-5,waist-8,10,6,2); ctx.fill();
+      break;
+    }
+    case 'kleid':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-6,neck+2); ctx.lineTo(cx+6,neck+2); ctx.lineTo(cx+9,waist); ctx.lineTo(cx-9,waist); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx-9,waist); ctx.lineTo(cx+9,waist); ctx.lineTo(cx+16,waist+12); ctx.lineTo(cx-16,waist+12); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-8,waist-3,16,4);
+      break;
+    }
+    case 'ruestung':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-9,neck+1); ctx.lineTo(cx+9,neck+1); ctx.lineTo(cx+8,waist); ctx.lineTo(cx-8,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      for(let seg=0;seg<3;seg++) ctx.fillRect(cx-9,neck+2+seg*4,18,2);
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.ellipse(cx-12,neck+3,6,4,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(cx+12,neck+3,6,4,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-1,neck+1,2,waist-neck-1);
       break;
     }
   }
@@ -659,8 +740,13 @@ function drawStickFigure(px,py,p){
   const headR=9,headCY=py+headR,neck=py+headR*2,waist=py+headR*2+14,footY=py+PH;
   const swing=p.dead?0:Math.sin(p.walkCycle)*14;
   const sd=SKINS.find(s=>s.id===(p.skin||'standard'))||SKINS[0];
-  const strokeCol=p.dead?'#ff4444':sd.stroke;
-  const headCol=p.dead?'#ff8888':sd.head;
+  let strokeCol=p.dead?'#ff4444':sd.stroke;
+  let headCol=p.dead?'#ff8888':sd.head;
+  let faceCol=sd.face;
+  if(!p.dead&&p.skin==='regenbogen'){
+    const h=(Date.now()/18)%360;
+    strokeCol=`hsl(${h},75%,30%)`; headCol=`hsl(${h},80%,72%)`; faceCol=`hsl(${h},75%,18%)`;
+  }
   // Cape drawn behind body
   if(!p.dead&&p.clothing==='cape') drawClothing(cx,neck,waist,'cape',p.facing);
   ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=p.dead?2:2.5;
@@ -683,9 +769,9 @@ function drawStickFigure(px,py,p){
     ctx.moveTo(cx+2,headCY-3);ctx.lineTo(cx+5,headCY); ctx.moveTo(cx+5,headCY-3);ctx.lineTo(cx+2,headCY);
     ctx.stroke();
   } else {
-    ctx.fillStyle=sd.face; ctx.beginPath(); ctx.arc(cx+p.facing*3,headCY-1,2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=faceCol; ctx.beginPath(); ctx.arc(cx+p.facing*3,headCY-1,2,0,Math.PI*2); ctx.fill();
     ctx.lineWidth=1.5;
-    if(!p.onGround&&p.vy<-2){ctx.fillStyle=sd.face;ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+3,2.5,0,Math.PI);ctx.fill();}
+    if(!p.onGround&&p.vy<-2){ctx.fillStyle=faceCol;ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+3,2.5,0,Math.PI);ctx.fill();}
     else{ctx.strokeStyle=strokeCol;ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+2,2.5,0.1,Math.PI-0.1);ctx.stroke();}
     if(!p.onGround&&p.jumpCount===1){
       ctx.fillStyle='rgba(136,204,255,0.9)'; ctx.font='10px Arial'; ctx.textAlign='center';
@@ -780,39 +866,57 @@ function drawShopGrid(items,cols,cardW,cardH,gap,gridTop,category){
     else if(category==='skin'){ownedArr=save.ownedSkins;selectedId=save.skin||'standard';}
     else{ownedArr=save.ownedClothing;selectedId=save.clothing||'none';}
     const owned=ownedArr.includes(item.id),selected=selectedId===item.id,afford=item.price===0||save.coins>=item.price;
-    // Card
+    // Card bg
     ctx.fillStyle=selected?'#0d3d1a':owned?'#0d2d0d':afford?'#0d1a3d':'#1a0d0d';
     ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.fill();
     ctx.strokeStyle=selected?'#00e676':owned?'#4caf50':afford?'#2196f3':'#444';
     ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.stroke();
-    // Mini figure preview
-    const mockP={dead:false,facing:1,walkCycle:0,landSquish:0,jumpStretch:0,lean:0,
-      onGround:true,jumpCount:0,vy:0,
-      hat:category==='hat'?item.id:(save.hat||'kinderhut'),
-      skin:category==='skin'?item.id:(save.skin||'standard'),
-      clothing:category==='clothing'?item.id:(save.clothing||'none')};
-    const fCX=cx2+cardW/2, fCY=cy2+16+PH/2;
+    // ── Preview (clipped to card) ──
     ctx.save();
-    ctx.translate(fCX,fCY);ctx.scale(1.22,1.22);ctx.translate(-fCX,-fCY);
-    drawStickFigure(fCX-PW/2,cy2+16,mockP);
+    ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.clip();
+    const hcx=cx2+cardW/2;
+    if(category==='hat'){
+      // Head + hat only
+      const hcy=cy2+52, hr=12;
+      const sd2=SKINS.find(s=>s.id===(save.skin||'standard'))||SKINS[0];
+      ctx.fillStyle=sd2.head;ctx.strokeStyle=sd2.stroke;ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.arc(hcx,hcy,hr,0,Math.PI*2);ctx.fill();ctx.stroke();
+      ctx.fillStyle=sd2.face;ctx.beginPath();ctx.arc(hcx+4,hcy-2,2.5,0,Math.PI*2);ctx.fill();
+      if(item.id!=='none'){
+        ctx.save();ctx.translate(hcx,hcy);ctx.scale(1.25,1.25);ctx.translate(-hcx,-hcy);
+        drawHat(hcx,hcy,hr,item.id);ctx.restore();
+      }
+    } else {
+      // Mini full figure
+      const mockP={dead:false,facing:1,walkCycle:0,landSquish:0,jumpStretch:0,lean:0,
+        onGround:true,jumpCount:0,vy:0,
+        hat:category==='clothing'?'none':(save.hat||'kinderhut'),
+        skin:category==='skin'?item.id:(save.skin||'standard'),
+        clothing:category==='clothing'?item.id:(save.clothing||'none')};
+      const fPY=cy2+8;
+      ctx.save();
+      ctx.translate(hcx,fPY+PH/2);ctx.scale(1.08,1.08);ctx.translate(-hcx,-(fPY+PH/2));
+      drawStickFigure(hcx-PW/2,fPY,mockP);
+      ctx.restore();
+    }
     ctx.restore();
     // Name
-    ctx.fillStyle='#fff';ctx.font='bold 11px Segoe UI,Arial';ctx.textAlign='center';
-    ctx.fillText(item.name,cx2+cardW/2,cy2+cardH-36);
+    ctx.fillStyle='#fff';ctx.font='bold 10px Segoe UI,Arial';ctx.textAlign='center';
+    ctx.fillText(item.name,hcx,cy2+cardH-29);
     // Price/status
-    if(item.price===0){ctx.fillStyle='#81c784';ctx.font='10px Segoe UI,Arial';ctx.fillText('Kostenlos',cx2+cardW/2,cy2+cardH-23);}
-    else if(owned){ctx.fillStyle='#81c784';ctx.font='10px Segoe UI,Arial';ctx.fillText('Gekauft ✓',cx2+cardW/2,cy2+cardH-23);}
-    else{ctx.fillStyle=afford?'#FFD700':'#ef9a9a';ctx.font='10px Segoe UI,Arial';ctx.fillText(`💰 ${item.price}`,cx2+cardW/2,cy2+cardH-23);}
+    if(item.price===0){ctx.fillStyle='#81c784';ctx.font='9px Segoe UI,Arial';ctx.fillText('Kostenlos',hcx,cy2+cardH-17);}
+    else if(owned){ctx.fillStyle='#81c784';ctx.font='9px Segoe UI,Arial';ctx.fillText('Gekauft ✓',hcx,cy2+cardH-17);}
+    else{ctx.fillStyle=afford?'#FFD700':'#ef9a9a';ctx.font='9px Segoe UI,Arial';ctx.fillText(`💰 ${item.price}`,hcx,cy2+cardH-17);}
     // Button
-    const bx2=cx2+8,by2=cy2+cardH-18,bw2=cardW-16,bh2=16;
+    const bx2=cx2+6,by2=cy2+cardH-13,bw2=cardW-12,bh2=12;
     let lbl,bg2;
     if(selected){lbl='✓ AKTIV';bg2='#1b5e20';}
     else if(owned){lbl='AUSWÄHLEN';bg2='#2e7d32';}
     else if(afford){lbl='KAUFEN';bg2='#1565c0';}
     else{lbl='ZU TEUER';bg2='#37474f';}
-    ctx.fillStyle=bg2;ctx.beginPath();ctx.roundRect(bx2,by2,bw2,bh2,4);ctx.fill();
-    ctx.fillStyle=selected?'#aaa':'#fff';ctx.font='bold 9px Segoe UI,Arial';
-    ctx.fillText(lbl,cx2+cardW/2,by2+bh2/2+4);
+    ctx.fillStyle=bg2;ctx.beginPath();ctx.roundRect(bx2,by2,bw2,bh2,3);ctx.fill();
+    ctx.fillStyle=selected?'#aaa':'#fff';ctx.font='bold 8px Segoe UI,Arial';
+    ctx.fillText(lbl,hcx,by2+bh2/2+3);
     if(!selected){
       addBtn(bx2,by2,bw2,bh2,()=>{
         if(owned){
@@ -853,10 +957,10 @@ function drawShopScreen(){
     ctx.fillText(tab.label,tx+tabW/2,ty+tabH/2+4);
     addBtn(tx,ty,tabW,tabH,()=>{shopTab=tab.id;});
   });
-  // Grid (y=108, 2 rows of 148 + 10gap = 306, ends y=414, back btn at y=464)
-  if(shopTab==='hats')      drawShopGrid(HATS,    4,212,148,10,108,'hat');
-  else if(shopTab==='skins') drawShopGrid(SKINS,   4,212,148,10,108,'skin');
-  else                       drawShopGrid(CLOTHING, 3,290,148,14,108,'clothing');
+  // Grid: 3 rows × cardH=110, gap=8 → 3*110+2*8=346, y=108..454, back btn at y=474 ✓
+  if(shopTab==='hats')       drawShopGrid(HATS,     4,214,110,8,108,'hat');
+  else if(shopTab==='skins') drawShopGrid(SKINS,    4,214,110,8,108,'skin');
+  else                       drawShopGrid(CLOTHING,  3,292,110,10,108,'clothing');
   // Back
   const bkW=200,bkH=38,bkX=(W-200)/2,bkY=H-46;
   drawBtn(bkX,bkY,bkW,bkH,'← ZURÜCK','#37474f');

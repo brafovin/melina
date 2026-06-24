@@ -86,18 +86,28 @@ const JBUF_MAX   = 10;
 
 // ── Hats ─────────────────────────────────────────────────
 const HATS = [
-  { id:'none',      name:'Kein Hut',    price:0    },
-  { id:'kinderhut', name:'Kinderhut',   price:0    },
-  { id:'cowboy',    name:'Cowboyhut',   price:60   },
-  { id:'baseball',  name:'Baseballkappe',price:80  },
-  { id:'xmas',      name:'Weihnachtsmütze',price:90},
-  { id:'detektiv',  name:'Detektivhut', price:160  },
-  { id:'zauber',    name:'Zauberhut',   price:180  },
-  { id:'tophat',    name:'Zylinder',    price:220  },
-  { id:'piraten',   name:'Piratenhut',  price:300  },
-  { id:'krone',     name:'Krone',       price:400  },
-  { id:'wikinger',  name:'Wikingerhut', price:800  },
-  { id:'astronaut', name:'Raumhelm',    price:1800 },
+  { id:'none',      name:'Kein Hut',       price:0    },
+  { id:'kinderhut', name:'Kinderhut',       price:0    },
+  { id:'baseball',  name:'Baseballkappe',   price:80   },
+  { id:'beret',     name:'Baskenmütze',     price:90   },
+  { id:'xmas',      name:'Weihnachtsmütze', price:90   },
+  { id:'propeller', name:'Propellerkappe',  price:100  },
+  { id:'ninja',     name:'Ninja-Stirnband', price:100  },
+  { id:'katze',     name:'Katzenohren',     price:120  },
+  { id:'chef',      name:'Kochmütze',       price:140  },
+  { id:'detektiv',  name:'Detektivhut',     price:160  },
+  { id:'cowboy',    name:'Cowboyhut',       price:160  },
+  { id:'zauber',    name:'Zauberhut',       price:180  },
+  { id:'burger',    name:'Burger-Hut',      price:200  },
+  { id:'tophat',    name:'Zylinder',        price:220  },
+  { id:'engel',     name:'Heiligenschein',  price:250  },
+  { id:'teufel',    name:'Teufelshörner',   price:250  },
+  { id:'piraten',   name:'Piratenhut',      price:300  },
+  { id:'helm',      name:'Ritterhelm',      price:350  },
+  { id:'krone',     name:'Krone',           price:400  },
+  { id:'samurai',   name:'Samurai-Helm',    price:700  },
+  { id:'wikinger',  name:'Wikingerhut',     price:800  },
+  { id:'astronaut', name:'Raumhelm',        price:1800 },
 ];
 
 const SKINS = [
@@ -106,25 +116,45 @@ const SKINS = [
   { id:'blau',       name:'Blau',       price:50,  stroke:'#1a6fc4', head:'#90caf9', face:'#0d47a1' },
   { id:'gruen',      name:'Grün',       price:50,  stroke:'#2e7d32', head:'#a5d6a7', face:'#1b5e20' },
   { id:'pink',       name:'Pink',       price:60,  stroke:'#ad1457', head:'#f48fb1', face:'#880e4f' },
+  { id:'sand',       name:'Sand',       price:70,  stroke:'#6d4c41', head:'#ffecb3', face:'#4e342e' },
   { id:'cyan',       name:'Türkis',     price:70,  stroke:'#00838f', head:'#80deea', face:'#006064' },
+  { id:'mint',       name:'Mint',       price:80,  stroke:'#00695c', head:'#b2dfdb', face:'#004d40' },
   { id:'lila',       name:'Lila',       price:80,  stroke:'#6a1b9a', head:'#ce93d8', face:'#4a148c' },
+  { id:'gelb',       name:'Gelb',       price:80,  stroke:'#f57f17', head:'#fff9c4', face:'#e65100' },
   { id:'orange',     name:'Orange',     price:80,  stroke:'#e65100', head:'#ffcc80', face:'#bf360c' },
+  { id:'braun',      name:'Braun',      price:90,  stroke:'#4e342e', head:'#bcaaa4', face:'#3e2723' },
+  { id:'weiss',      name:'Schneeweiß', price:100, stroke:'#bdbdbd', head:'#fafafa', face:'#9e9e9e' },
+  { id:'petrol',     name:'Petrol',     price:110, stroke:'#006064', head:'#80cbc4', face:'#004d40' },
   { id:'neon',       name:'Neongrün',   price:120, stroke:'#558b2f', head:'#ccff90', face:'#33691e' },
   { id:'dunkel',     name:'Dunkel',     price:150, stroke:'#263238', head:'#546e7a', face:'#102027' },
+  { id:'nacht',      name:'Nacht',      price:170, stroke:'#1a1a2e', head:'#2d2d44', face:'#0d0d1a' },
+  { id:'silber',     name:'Silber',     price:180, stroke:'#546e7a', head:'#eceff1', face:'#37474f' },
+  { id:'lava',       name:'Lava',       price:200, stroke:'#bf360c', head:'#ff8a65', face:'#8d2000' },
   { id:'gold',       name:'Gold',       price:200, stroke:'#b8860b', head:'#FFD700', face:'#e65100' },
+  { id:'glas',       name:'Glas',       price:400, stroke:'rgba(100,200,255,0.8)', head:'rgba(210,240,255,0.55)', face:'rgba(60,140,200,0.9)' },
   { id:'regenbogen', name:'Regenbogen', price:500, stroke:'#111',    head:'#fff',    face:'#111' },
 ];
 
 const CLOTHING = [
-  { id:'none',     name:'Kein Outfit', price:0 },
-  { id:'tshirt',   name:'T-Shirt',     price:40,  c1:'#2196f3', c2:'#1565c0' },
-  { id:'hoodie',   name:'Hoodie',      price:70,  c1:'#546e7a', c2:'#263238' },
-  { id:'jacke',    name:'Jacke',       price:100, c1:'#c62828', c2:'#7f0000' },
-  { id:'kleid',    name:'Kleid',       price:140, c1:'#e91e63', c2:'#880e4f' },
-  { id:'sport',    name:'Sportanzug',  price:200, c1:'#00897b', c2:'#004d40' },
-  { id:'anzug',    name:'Anzug',       price:280, c1:'#424242', c2:'#212121' },
-  { id:'cape',     name:'Cape',        price:350, c1:'#7b1fa2', c2:'#4a148c' },
-  { id:'ruestung', name:'Rüstung',     price:600, c1:'#78909c', c2:'#37474f' },
+  { id:'none',        name:'Kein Outfit',     price:0 },
+  { id:'tshirt',      name:'T-Shirt',         price:40,  c1:'#2196f3', c2:'#1565c0' },
+  { id:'hawaiihemd',  name:'Hawaiihemd',      price:70,  c1:'#ff6f00', c2:'#e91e63' },
+  { id:'hoodie',      name:'Hoodie',          price:70,  c1:'#546e7a', c2:'#263238' },
+  { id:'regenjacke',  name:'Regenjacke',      price:90,  c1:'#1976d2', c2:'#0d47a1' },
+  { id:'sailor',      name:'Matrosenanzug',   price:110, c1:'#1565c0', c2:'#ffffff' },
+  { id:'jacke',       name:'Jacke',           price:100, c1:'#c62828', c2:'#7f0000' },
+  { id:'kleid',       name:'Kleid',           price:140, c1:'#e91e63', c2:'#880e4f' },
+  { id:'arzt',        name:'Arztkittel',      price:160, c1:'#ffffff', c2:'#e3f2fd' },
+  { id:'sport',       name:'Sportanzug',      price:200, c1:'#00897b', c2:'#004d40' },
+  { id:'pirat',       name:'Piraten-Outfit',  price:240, c1:'#1a1a2e', c2:'#c62828' },
+  { id:'flammen',     name:'Flammen-Shirt',   price:260, c1:'#e53935', c2:'#ff6f00' },
+  { id:'anzug',       name:'Anzug',           price:280, c1:'#424242', c2:'#212121' },
+  { id:'ninja_out',   name:'Ninja-Outfit',    price:320, c1:'#212121', c2:'#1a1a1a' },
+  { id:'cape',        name:'Cape',            price:350, c1:'#7b1fa2', c2:'#4a148c' },
+  { id:'frack',       name:'Frack',           price:380, c1:'#212121', c2:'#1a1a2e' },
+  { id:'superheld',   name:'Superheld',       price:450, c1:'#1565c0', c2:'#c62828' },
+  { id:'ruestung',    name:'Rüstung',         price:600, c1:'#78909c', c2:'#37474f' },
+  { id:'wikinger_out',name:'Wikinger-Rüstung',price:700, c1:'#5d4037', c2:'#795548' },
 ];
 
 // ── Save / Load ───────────────────────────────────────────
@@ -158,11 +188,23 @@ canvas.addEventListener('mousemove', e => {
   const mx=(e.clientX-r.left)*(W/r.width), my=(e.clientY-r.top)*(H/r.height);
   canvas.style.cursor = uiTargets.some(t=>mx>=t.x&&mx<=t.x+t.w&&my>=t.y&&my<=t.y+t.h) ? 'pointer' : 'default';
 });
+canvas.addEventListener('wheel', e=>{
+  if(state!=='shop') return;
+  e.preventDefault();
+  const tab=shopTab==='hats'?'hats':shopTab==='skins'?'skins':'clothing';
+  shopScroll[tab]=Math.max(0,Math.min(shopScrollMax[tab],shopScroll[tab]+e.deltaY*0.55));
+},{passive:false});
 
 // ── Input ────────────────────────────────────────────────
 const keys = {};
 document.addEventListener('keydown', e => {
   keys[e.code] = true;
+  if(state==='shop'){
+    const tab=shopTab==='hats'?'hats':shopTab==='skins'?'skins':'clothing';
+    if(e.code==='ArrowDown'){shopScroll[tab]=Math.min(shopScrollMax[tab],shopScroll[tab]+28);e.preventDefault();}
+    if(e.code==='ArrowUp'){shopScroll[tab]=Math.max(0,shopScroll[tab]-28);e.preventDefault();}
+    return;
+  }
   if(['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
   if(e.code==='KeyR' && ['playing','dead'].includes(state)){ state='start'; }
 });
@@ -174,6 +216,8 @@ document.addEventListener('keyup', e => {
 // ── State ────────────────────────────────────────────────
 let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], deathTimer=0, cameraX=0;
 let shopTab='hats';
+const shopScroll={hats:0,skins:0,clothing:0};
+const shopScrollMax={hats:0,skins:0,clothing:0};
 const TOTAL=100;
 
 function setHud(on){
@@ -501,6 +545,92 @@ function drawHat(cx,headCY,headR,hatId){
       ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.fillRect(cx-10,top-5,4,8);
       break;
     }
+    case 'beret':{
+      ctx.fillStyle='#1565c0';
+      ctx.beginPath(); ctx.ellipse(cx-3,top-3,14,8,-0.25,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#0d47a1'; ctx.beginPath(); ctx.ellipse(cx-1,top-2,5,3,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#1976d2'; ctx.beginPath(); ctx.ellipse(cx-6,top-5,4,2,-0.2,0,Math.PI*2); ctx.fill();
+      break;
+    }
+    case 'ninja':{
+      ctx.fillStyle='#c62828';
+      ctx.fillRect(cx-13,top-1,26,6);
+      ctx.fillStyle='#b71c1c';
+      ctx.beginPath(); ctx.arc(cx+12,top+2,4.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#e53935'; ctx.fillRect(cx-12,top+1,8,2);
+      break;
+    }
+    case 'katze':{
+      ctx.fillStyle='#212121';
+      ctx.beginPath(); ctx.moveTo(cx-14,top+1); ctx.lineTo(cx-9,top-15); ctx.lineTo(cx-4,top+1); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+4,top+1); ctx.lineTo(cx+9,top-15); ctx.lineTo(cx+14,top+1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#e91e63';
+      ctx.beginPath(); ctx.moveTo(cx-12,top); ctx.lineTo(cx-9,top-10); ctx.lineTo(cx-6,top); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+6,top); ctx.lineTo(cx+9,top-10); ctx.lineTo(cx+12,top); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'propeller':{
+      ctx.fillStyle='#f44336';
+      ctx.beginPath(); ctx.arc(cx,top-5,11,Math.PI,0); ctx.lineTo(cx+11,top+1); ctx.lineTo(cx-11,top+1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#1565c0'; ctx.fillRect(cx-11,top-1,22,4);
+      ctx.fillStyle='#FFD700';
+      ctx.save(); ctx.translate(cx,top-16);
+      ctx.fillRect(-10,-2.5,10,5); ctx.rotate(Math.PI/2); ctx.fillRect(-10,-2.5,10,5);
+      ctx.restore();
+      ctx.fillStyle='#333'; ctx.beginPath(); ctx.arc(cx,top-16,3,0,Math.PI*2); ctx.fill();
+      break;
+    }
+    case 'burger':{
+      ctx.fillStyle='#8B4513';
+      ctx.beginPath(); ctx.ellipse(cx,top-9,13,8,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#4caf50'; ctx.fillRect(cx-13,top-1,26,3);
+      ctx.fillStyle='#f44336'; ctx.fillRect(cx-12,top+2,24,3);
+      ctx.fillStyle='#7b3f00'; ctx.fillRect(cx-12,top+5,24,3);
+      break;
+    }
+    case 'engel':{
+      ctx.strokeStyle='#FFD700'; ctx.lineWidth=3.5;
+      ctx.fillStyle='rgba(255,215,0,0.18)';
+      ctx.beginPath(); ctx.ellipse(cx,top-14,13,4.5,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      break;
+    }
+    case 'teufel':{
+      ctx.fillStyle='#c62828';
+      ctx.beginPath(); ctx.moveTo(cx-12,top+1); ctx.lineTo(cx-7,top-17); ctx.lineTo(cx-2,top+1); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+2,top+1); ctx.lineTo(cx+7,top-17); ctx.lineTo(cx+12,top+1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#e53935';
+      ctx.beginPath(); ctx.moveTo(cx-11,top); ctx.lineTo(cx-7,top-12); ctx.lineTo(cx-3,top); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+3,top); ctx.lineTo(cx+7,top-12); ctx.lineTo(cx+11,top); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'chef':{
+      ctx.fillStyle='#fff';
+      ctx.beginPath(); ctx.ellipse(cx,top+2,14,5,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(cx,top-11,11,13,0,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#e0e0e0'; ctx.fillRect(cx-13,top-2,26,5);
+      ctx.fillStyle='#bdbdbd'; ctx.fillRect(cx-1,top-5,2,3);
+      break;
+    }
+    case 'helm':{
+      ctx.fillStyle='#9e9e9e';
+      ctx.beginPath(); ctx.arc(cx,top-3,13,Math.PI,0); ctx.lineTo(cx+13,top+4); ctx.lineTo(cx-13,top+4); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#616161'; ctx.fillRect(cx-11,top-1,22,6);
+      ctx.fillStyle='#9e9e9e';
+      for(let g=0;g<3;g++) ctx.fillRect(cx-9,top+g*2,18,1);
+      ctx.fillStyle='#bdbdbd'; ctx.fillRect(cx-7,top-4,3,5);
+      break;
+    }
+    case 'samurai':{
+      ctx.fillStyle='#b71c1c';
+      ctx.beginPath(); ctx.arc(cx,top-4,13,Math.PI,0); ctx.lineTo(cx+13,top+3); ctx.lineTo(cx-13,top+3); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#d32f2f'; ctx.fillRect(cx-5,top-5,10,8);
+      ctx.fillStyle='#c62828';
+      ctx.beginPath(); ctx.moveTo(cx-13,top+3); ctx.lineTo(cx-19,top+9); ctx.lineTo(cx-10,top+5); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+13,top+3); ctx.lineTo(cx+19,top+9); ctx.lineTo(cx+10,top+5); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#FFD700';
+      ctx.beginPath(); ctx.moveTo(cx-3,top-17); ctx.lineTo(cx,top-28); ctx.lineTo(cx+3,top-17); ctx.closePath(); ctx.fill();
+      break;
+    }
     case 'xmas':{
       const gx=ctx.createLinearGradient(cx,top+3,cx+4,top-28);
       gx.addColorStop(0,'#c62828'); gx.addColorStop(1,'#ff1744');
@@ -645,6 +775,96 @@ function drawClothing(cx,neck,waist,clothingId,facing){
       ctx.beginPath(); ctx.ellipse(cx-12,neck+3,6,4,0,0,Math.PI*2); ctx.fill();
       ctx.beginPath(); ctx.ellipse(cx+12,neck+3,6,4,0,0,Math.PI*2); ctx.fill();
       ctx.fillStyle=cl.c2; ctx.fillRect(cx-1,neck+1,2,waist-neck-1);
+      break;
+    }
+    case 'hawaiihemd':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-7,neck+2); ctx.lineTo(cx+7,neck+2); ctx.lineTo(cx+6,waist-1); ctx.lineTo(cx-6,waist-1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath(); ctx.arc(cx-3,neck+6,3,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx+4,neck+11,3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=cl.c1; ctx.beginPath(); ctx.arc(cx-3,neck+6,1.5,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(cx+4,neck+11,1.5,0,Math.PI*2); ctx.fill();
+      break;
+    }
+    case 'regenjacke':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-9,neck+1); ctx.lineTo(cx+9,neck+1); ctx.lineTo(cx+8,waist); ctx.lineTo(cx-8,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-9,neck+1,18,4);
+      ctx.strokeStyle=cl.c2; ctx.lineWidth=1; ctx.setLineDash([2,2]);
+      ctx.beginPath(); ctx.moveTo(cx,neck+5); ctx.lineTo(cx,waist-1); ctx.stroke();
+      ctx.setLineDash([]);
+      break;
+    }
+    case 'sailor':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx,neck+11); ctx.lineTo(cx+8,neck+1); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle=cl.c1; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(cx-6,neck+2); ctx.lineTo(cx,neck+9); ctx.lineTo(cx+6,neck+2); ctx.stroke();
+      break;
+    }
+    case 'arzt':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-9,neck+1,18,3);
+      ctx.fillStyle='#f44336'; ctx.fillRect(cx-4,neck+8,8,2); ctx.fillRect(cx-1,neck+6,2,6);
+      break;
+    }
+    case 'pirat':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+4); ctx.lineTo(cx+8,waist-4); ctx.lineTo(cx+8,waist); ctx.lineTo(cx-8,neck+8); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'flammen':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-7,neck+2); ctx.lineTo(cx+7,neck+2); ctx.lineTo(cx+6,waist-1); ctx.lineTo(cx-6,waist-1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath();
+      ctx.moveTo(cx-6,waist-1); ctx.lineTo(cx-4,waist-7); ctx.lineTo(cx-2,waist-4); ctx.lineTo(cx,waist-9); ctx.lineTo(cx+2,waist-4); ctx.lineTo(cx+4,waist-7); ctx.lineTo(cx+6,waist-1);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#fff9c4';
+      ctx.beginPath();
+      ctx.moveTo(cx-3,waist-2); ctx.lineTo(cx-1,waist-6); ctx.lineTo(cx,waist-4); ctx.lineTo(cx+1,waist-6); ctx.lineTo(cx+3,waist-2);
+      ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'ninja_out':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-7,neck+9,14,3);
+      ctx.strokeStyle='#333'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(cx-7,neck+3); ctx.lineTo(cx+5,waist-2); ctx.stroke();
+      break;
+    }
+    case 'frack':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx-7,waist); ctx.lineTo(cx-11,waist+13); ctx.lineTo(cx-4,waist+8); ctx.lineTo(cx,waist); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+7,waist); ctx.lineTo(cx+11,waist+13); ctx.lineTo(cx+4,waist+8); ctx.lineTo(cx,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.fillRect(cx-2,neck+3,4,waist-neck-4);
+      ctx.fillStyle='#111';
+      for(let b=0;b<3;b++){ctx.beginPath();ctx.arc(cx,neck+5+b*3,1,0,Math.PI*2);ctx.fill();}
+      break;
+    }
+    case 'superheld':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-7,waist-4,14,5);
+      ctx.fillStyle='#FFD700';
+      ctx.beginPath(); ctx.moveTo(cx-1,neck+3); ctx.lineTo(cx+3,neck+8); ctx.lineTo(cx,neck+8); ctx.lineTo(cx+1,neck+13); ctx.lineTo(cx-3,neck+8); ctx.lineTo(cx,neck+8); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'wikinger_out':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-9,neck+1); ctx.lineTo(cx+9,neck+1); ctx.lineTo(cx+8,waist); ctx.lineTo(cx-8,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      for(let r2=0;r2<2;r2++) for(let c2=-1;c2<=1;c2++){ctx.beginPath();ctx.ellipse(cx+c2*7,neck+5+r2*6,4,3,0,0,Math.PI);ctx.fill();}
+      ctx.fillStyle='#d7ccc8';
+      ctx.beginPath(); ctx.moveTo(cx-9,neck+1); ctx.lineTo(cx-6,neck+7); ctx.lineTo(cx-3,neck+4); ctx.lineTo(cx,neck+8); ctx.lineTo(cx+3,neck+4); ctx.lineTo(cx+6,neck+7); ctx.lineTo(cx+9,neck+1); ctx.closePath(); ctx.fill();
       break;
     }
   }
@@ -858,52 +1078,56 @@ function drawStartScreen(){
 function drawShopGrid(items,cols,cardW,cardH,gap,gridTop,category){
   const gridW=cols*cardW+(cols-1)*gap;
   const ox=(W-gridW)/2;
+  const totalRows=Math.ceil(items.length/cols);
+  const totalH=totalRows*cardH+(totalRows-1)*gap;
+  const visTop=gridTop, visBot=H-52;
+  const tabKey=category==='hat'?'hats':category==='skin'?'skins':'clothing';
+  shopScrollMax[tabKey]=Math.max(0,totalH-(visBot-visTop));
+  const scrollY=shopScroll[tabKey]||0;
+
+  // Clip grid area
+  ctx.save();
+  ctx.beginPath();ctx.rect(0,visTop,W,visBot-visTop);ctx.clip();
+
   items.forEach((item,i)=>{
     const col=i%cols,row=Math.floor(i/cols);
-    const cx2=ox+col*(cardW+gap),cy2=gridTop+row*(cardH+gap);
+    const cx2=ox+col*(cardW+gap);
+    const cy2=visTop+row*(cardH+gap)-scrollY;
+    if(cy2+cardH<visTop||cy2>visBot) return; // out of view
     let ownedArr,selectedId;
     if(category==='hat'){ownedArr=save.owned;selectedId=save.hat;}
     else if(category==='skin'){ownedArr=save.ownedSkins;selectedId=save.skin||'standard';}
     else{ownedArr=save.ownedClothing;selectedId=save.clothing||'none';}
     const owned=ownedArr.includes(item.id),selected=selectedId===item.id,afford=item.price===0||save.coins>=item.price;
+    const hcx=cx2+cardW/2;
     // Card bg
     ctx.fillStyle=selected?'#0d3d1a':owned?'#0d2d0d':afford?'#0d1a3d':'#1a0d0d';
     ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.fill();
     ctx.strokeStyle=selected?'#00e676':owned?'#4caf50':afford?'#2196f3':'#444';
     ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.stroke();
-    // ── Preview (clipped to card) ──
+    // Preview clipped to card
     ctx.save();
     ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.clip();
-    const hcx=cx2+cardW/2;
     if(category==='hat'){
-      // Head + hat only
-      const hcy=cy2+52, hr=12;
+      const hcy=cy2+52,hr=12;
       const sd2=SKINS.find(s=>s.id===(save.skin||'standard'))||SKINS[0];
       ctx.fillStyle=sd2.head;ctx.strokeStyle=sd2.stroke;ctx.lineWidth=1.5;
       ctx.beginPath();ctx.arc(hcx,hcy,hr,0,Math.PI*2);ctx.fill();ctx.stroke();
       ctx.fillStyle=sd2.face;ctx.beginPath();ctx.arc(hcx+4,hcy-2,2.5,0,Math.PI*2);ctx.fill();
-      if(item.id!=='none'){
-        ctx.save();ctx.translate(hcx,hcy);ctx.scale(1.25,1.25);ctx.translate(-hcx,-hcy);
-        drawHat(hcx,hcy,hr,item.id);ctx.restore();
-      }
+      if(item.id!=='none'){ctx.save();ctx.translate(hcx,hcy);ctx.scale(1.25,1.25);ctx.translate(-hcx,-hcy);drawHat(hcx,hcy,hr,item.id);ctx.restore();}
     } else {
-      // Mini full figure
-      const mockP={dead:false,facing:1,walkCycle:0,landSquish:0,jumpStretch:0,lean:0,
-        onGround:true,jumpCount:0,vy:0,
+      const mockP={dead:false,facing:1,walkCycle:0,landSquish:0,jumpStretch:0,lean:0,onGround:true,jumpCount:0,vy:0,
         hat:category==='clothing'?'none':(save.hat||'kinderhut'),
         skin:category==='skin'?item.id:(save.skin||'standard'),
         clothing:category==='clothing'?item.id:(save.clothing||'none')};
       const fPY=cy2+8;
-      ctx.save();
-      ctx.translate(hcx,fPY+PH/2);ctx.scale(1.08,1.08);ctx.translate(-hcx,-(fPY+PH/2));
-      drawStickFigure(hcx-PW/2,fPY,mockP);
-      ctx.restore();
+      ctx.save();ctx.translate(hcx,fPY+PH/2);ctx.scale(1.08,1.08);ctx.translate(-hcx,-(fPY+PH/2));
+      drawStickFigure(hcx-PW/2,fPY,mockP);ctx.restore();
     }
     ctx.restore();
-    // Name
+    // Labels
     ctx.fillStyle='#fff';ctx.font='bold 10px Segoe UI,Arial';ctx.textAlign='center';
     ctx.fillText(item.name,hcx,cy2+cardH-29);
-    // Price/status
     if(item.price===0){ctx.fillStyle='#81c784';ctx.font='9px Segoe UI,Arial';ctx.fillText('Kostenlos',hcx,cy2+cardH-17);}
     else if(owned){ctx.fillStyle='#81c784';ctx.font='9px Segoe UI,Arial';ctx.fillText('Gekauft ✓',hcx,cy2+cardH-17);}
     else{ctx.fillStyle=afford?'#FFD700':'#ef9a9a';ctx.font='9px Segoe UI,Arial';ctx.fillText(`💰 ${item.price}`,hcx,cy2+cardH-17);}
@@ -934,6 +1158,21 @@ function drawShopGrid(items,cols,cardW,cardH,gap,gridTop,category){
       });
     }
   });
+  ctx.restore(); // end clip
+
+  // Scrollbar
+  const maxS=shopScrollMax[tabKey];
+  if(maxS>0){
+    const sbX=W-10,sbH=visBot-visTop,sbY=visTop;
+    ctx.fillStyle='rgba(255,255,255,0.08)';ctx.beginPath();ctx.roundRect(sbX,sbY,6,sbH,3);ctx.fill();
+    const thumbH=Math.max(28,sbH*sbH/(sbH+maxS));
+    const thumbY=sbY+(sbH-thumbH)*(scrollY/maxS);
+    ctx.fillStyle='rgba(255,255,255,0.38)';ctx.beginPath();ctx.roundRect(sbX,thumbY,6,thumbH,3);ctx.fill();
+    if(scrollY<maxS){
+      ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='11px Arial';ctx.textAlign='center';
+      ctx.fillText('▼',W-7,visBot-3);
+    }
+  }
 }
 
 function drawShopScreen(){

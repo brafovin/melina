@@ -60,7 +60,7 @@
   <div id="controls">
     <span><kbd>←</kbd><kbd>→</kbd> Bewegen</span>
     <span><kbd>↑</kbd> / <kbd>Leertaste</kbd> Springen (2×)</span>
-    <span><kbd>R</kbd> Level neu</span>
+    <span><kbd>R</kbd> Startseite</span>
   </div>
 
 <script>
@@ -95,10 +95,34 @@ const HATS = [
   { id:'astronaut', name:'Raumhelm',       price:1800 },
 ];
 
+const SKINS = [
+  { id:'standard', name:'Standard',  price:0,   stroke:'#111',    head:'#fff',    face:'#111' },
+  { id:'rot',      name:'Rot',       price:50,  stroke:'#c0392b', head:'#ff8a80', face:'#7f0000' },
+  { id:'blau',     name:'Blau',      price:50,  stroke:'#1a6fc4', head:'#90caf9', face:'#0d47a1' },
+  { id:'gruen',    name:'Grün',      price:50,  stroke:'#2e7d32', head:'#a5d6a7', face:'#1b5e20' },
+  { id:'lila',     name:'Lila',      price:80,  stroke:'#6a1b9a', head:'#ce93d8', face:'#4a148c' },
+  { id:'orange',   name:'Orange',    price:80,  stroke:'#e65100', head:'#ffcc80', face:'#bf360c' },
+  { id:'gold',     name:'Gold',      price:200, stroke:'#b8860b', head:'#FFD700', face:'#e65100' },
+  { id:'dunkel',   name:'Dunkel',    price:150, stroke:'#263238', head:'#546e7a', face:'#102027' },
+];
+
+const CLOTHING = [
+  { id:'none',   name:'Kein Outfit', price:0 },
+  { id:'tshirt', name:'T-Shirt',     price:40,  c1:'#2196f3', c2:'#1565c0' },
+  { id:'jacke',  name:'Jacke',       price:100, c1:'#c62828', c2:'#7f0000' },
+  { id:'anzug',  name:'Anzug',       price:220, c1:'#424242', c2:'#212121' },
+  { id:'cape',   name:'Cape',        price:350, c1:'#7b1fa2', c2:'#4a148c' },
+  { id:'sport',  name:'Sportanzug',  price:480, c1:'#00897b', c2:'#004d40' },
+];
+
 // ── Save / Load ───────────────────────────────────────────
-let save = { coins:0, owned:['none','kinderhut'], hat:'kinderhut', level:1 };
+let save = { coins:0, owned:['none','kinderhut'], hat:'kinderhut', level:1, skin:'standard', ownedSkins:['standard'], clothing:'none', ownedClothing:['none'] };
 function loadSave() {
   try { const r=localStorage.getItem('strichSave'); if(r) Object.assign(save,JSON.parse(r)); } catch(e){}
+  if(!save.skin) save.skin='standard';
+  if(!save.ownedSkins||!save.ownedSkins.length) save.ownedSkins=['standard'];
+  if(!save.clothing) save.clothing='none';
+  if(!save.ownedClothing||!save.ownedClothing.length) save.ownedClothing=['none'];
 }
 function writeSave() {
   try { localStorage.setItem('strichSave',JSON.stringify(save)); } catch(e){}
@@ -137,6 +161,7 @@ document.addEventListener('keyup', e => {
 
 // ── State ────────────────────────────────────────────────
 let state='start', currentLevel=Math.max(1,save.level), tries=0, particles=[], deathTimer=0, cameraX=0;
+let shopTab='hats';
 const TOTAL=100;
 
 function setHud(on){
@@ -149,7 +174,7 @@ const PW=22, PH=42;
 const player = {
   x:0,y:0,vx:0,vy:0, onGround:false, wasOnGround:false,
   facing:1, dead:false,
-  hat:'kinderhut',
+  hat:'kinderhut', skin:'standard', clothing:'none',
   jumpCount:0, walkCycle:0, landSquish:0, jumpStretch:0,
   lean:0, coyote:0, jumpBuf:0, jumpWasDown:false,
 };
@@ -290,7 +315,7 @@ function initLevel(n){
   player.vx=player.vy=0;
   player.onGround=player.wasOnGround=false;
   player.dead=false; player.facing=1;
-  player.hat=save.hat;
+  player.hat=save.hat; player.skin=save.skin||'standard'; player.clothing=save.clothing||'none';
   player.jumpCount=0; player.walkCycle=0;
   player.landSquish=0; player.jumpStretch=0;
   player.lean=0; player.coyote=0; player.jumpBuf=0; player.jumpWasDown=false;
@@ -499,6 +524,52 @@ function drawHat(cx,headCY,headR,hatId){
   }
 }
 
+// ── Clothing drawing ──────────────────────────────────────
+function drawClothing(cx,neck,waist,clothingId,facing){
+  const cl=CLOTHING.find(c=>c.id===clothingId);
+  if(!cl||cl.id==='none') return;
+  ctx.save();
+  switch(clothingId){
+    case 'tshirt':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-7,neck+2); ctx.lineTo(cx+7,neck+2); ctx.lineTo(cx+6,waist-1); ctx.lineTo(cx-6,waist-1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx-11,neck+2,4,6); ctx.fillRect(cx+7,neck+2,4,6);
+      break;
+    }
+    case 'jacke':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2;
+      ctx.beginPath(); ctx.moveTo(cx-1,neck+2); ctx.lineTo(cx,neck+8); ctx.lineTo(cx-6,neck+2); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(cx+1,neck+2); ctx.lineTo(cx,neck+8); ctx.lineTo(cx+6,neck+2); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'anzug':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-8,neck+1); ctx.lineTo(cx+8,neck+1); ctx.lineTo(cx+7,waist); ctx.lineTo(cx-7,waist); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.fillRect(cx-2,neck+3,4,10);
+      ctx.fillStyle='#e53935';
+      ctx.beginPath(); ctx.moveTo(cx-1.5,neck+3); ctx.lineTo(cx+1.5,neck+3); ctx.lineTo(cx+2,neck+9); ctx.lineTo(cx,neck+12); ctx.lineTo(cx-2,neck+9); ctx.closePath(); ctx.fill();
+      break;
+    }
+    case 'cape':{
+      const dir=-(facing||1);
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx,neck+1); ctx.lineTo(cx+dir*20,neck+6); ctx.lineTo(cx+dir*16,waist+10); ctx.lineTo(cx,waist); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle=cl.c2; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(cx,neck+1); ctx.lineTo(cx+dir*20,neck+6); ctx.stroke();
+      break;
+    }
+    case 'sport':{
+      ctx.fillStyle=cl.c1;
+      ctx.beginPath(); ctx.moveTo(cx-7,neck+2); ctx.lineTo(cx+7,neck+2); ctx.lineTo(cx+6,waist-1); ctx.lineTo(cx-6,waist-1); ctx.closePath(); ctx.fill();
+      ctx.fillStyle=cl.c2; ctx.fillRect(cx+4,neck+2,2,waist-neck-3); ctx.fillRect(cx-6,neck+2,2,waist-neck-3);
+      break;
+    }
+  }
+  ctx.restore();
+}
+
 // ── Draw helpers ──────────────────────────────────────────
 function drawSky(lvl){
   const g=ctx.createLinearGradient(0,0,0,H);
@@ -587,15 +658,23 @@ function drawStickFigure(px,py,p){
   ctx.translate(cx,py+PH); ctx.rotate(p.lean); ctx.scale(sx,sy); ctx.translate(-cx,-(py+PH));
   const headR=9,headCY=py+headR,neck=py+headR*2,waist=py+headR*2+14,footY=py+PH;
   const swing=p.dead?0:Math.sin(p.walkCycle)*14;
+  const sd=SKINS.find(s=>s.id===(p.skin||'standard'))||SKINS[0];
+  const strokeCol=p.dead?'#ff4444':sd.stroke;
+  const headCol=p.dead?'#ff8888':sd.head;
+  // Cape drawn behind body
+  if(!p.dead&&p.clothing==='cape') drawClothing(cx,neck,waist,'cape',p.facing);
   ctx.lineCap='round'; ctx.lineJoin='round'; ctx.lineWidth=p.dead?2:2.5;
-  ctx.strokeStyle=p.dead?'#ff4444':'#111';
+  ctx.strokeStyle=strokeCol;
   ctx.beginPath(); ctx.moveTo(cx,waist); ctx.lineTo(cx-8+swing,footY); ctx.moveTo(cx,waist); ctx.lineTo(cx+8-swing,footY); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(cx,neck); ctx.lineTo(cx,waist); ctx.stroke();
   const aw=Math.sin(p.walkCycle+Math.PI)*10;
   ctx.beginPath();
   ctx.moveTo(cx,neck+4); ctx.lineTo(cx-11*p.facing+aw*0.4,waist-4);
   ctx.moveTo(cx,neck+4); ctx.lineTo(cx+11*p.facing-aw*0.4,waist-4); ctx.stroke();
-  ctx.fillStyle=p.dead?'#ff8888':'#fff';
+  // Other clothing on torso
+  if(!p.dead&&p.clothing&&p.clothing!=='none'&&p.clothing!=='cape')
+    drawClothing(cx,neck,waist,p.clothing,p.facing);
+  ctx.fillStyle=headCol;
   ctx.beginPath(); ctx.arc(cx,headCY,headR,0,Math.PI*2); ctx.fill(); ctx.stroke();
   if(p.dead){
     ctx.lineWidth=1.8;
@@ -604,15 +683,14 @@ function drawStickFigure(px,py,p){
     ctx.moveTo(cx+2,headCY-3);ctx.lineTo(cx+5,headCY); ctx.moveTo(cx+5,headCY-3);ctx.lineTo(cx+2,headCY);
     ctx.stroke();
   } else {
-    ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(cx+p.facing*3,headCY-1,2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=sd.face; ctx.beginPath(); ctx.arc(cx+p.facing*3,headCY-1,2,0,Math.PI*2); ctx.fill();
     ctx.lineWidth=1.5;
-    if(!p.onGround&&p.vy<-2){ctx.fillStyle='#333';ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+3,2.5,0,Math.PI);ctx.fill();}
-    else{ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+2,2.5,0.1,Math.PI-0.1);ctx.stroke();}
+    if(!p.onGround&&p.vy<-2){ctx.fillStyle=sd.face;ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+3,2.5,0,Math.PI);ctx.fill();}
+    else{ctx.strokeStyle=strokeCol;ctx.beginPath();ctx.arc(cx+p.facing*2,headCY+2,2.5,0.1,Math.PI-0.1);ctx.stroke();}
     if(!p.onGround&&p.jumpCount===1){
       ctx.fillStyle='rgba(136,204,255,0.9)'; ctx.font='10px Arial'; ctx.textAlign='center';
       ctx.fillText('✦',cx,headCY-headR-4); ctx.textAlign='left';
     }
-    // Hat
     if(p.hat&&p.hat!=='none') drawHat(cx,headCY,headR,p.hat);
   }
   ctx.restore();
@@ -661,7 +739,7 @@ function drawStartScreen(){
   // Mascot (animated)
   const mascot={...player, dead:false, facing:1,
     walkCycle:Date.now()/280, landSquish:0, jumpStretch:0, lean:0,
-    onGround:true, hat:save.hat, jumpCount:0};
+    onGround:true, hat:save.hat, skin:save.skin||'standard', clothing:save.clothing||'none', jumpCount:0};
   ctx.save();
   ctx.translate(W/2,280); ctx.scale(2.2,2.2); ctx.translate(-W/2,-280);
   drawStickFigure(W/2-PW/2,280-PH,mascot);
@@ -691,85 +769,98 @@ function drawStartScreen(){
 }
 
 // ── Shop screen ───────────────────────────────────────────
-function drawShopScreen(){
-  uiTargets=[];
-  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
-
-  ctx.textAlign='center';
-  ctx.fillStyle='#FFD700'; ctx.font='bold 38px Segoe UI,Arial'; ctx.fillText('🏪  SHOP',W/2,52);
-  ctx.fillStyle='rgba(255,255,255,0.8)'; ctx.font='20px Segoe UI,Arial';
-  ctx.fillText(`💰  ${save.coins} Münzen`,W/2,84);
-
-  // Grid: 3 cols × 2 rows
-  const cardW=266,cardH=162,gap=16;
-  const gridW=3*cardW+2*gap;
-  const sx=(W-gridW)/2;
-
-  HATS.forEach((hat,i)=>{
-    const col=i%3, row=Math.floor(i/3);
-    const cx2=sx+col*(cardW+gap), cy2=106+row*(cardH+gap);
-    const owned=save.owned.includes(hat.id);
-    const selected=save.hat===hat.id;
-    const afford=save.coins>=hat.price;
-
+function drawShopGrid(items,cols,cardW,cardH,gap,gridTop,category){
+  const gridW=cols*cardW+(cols-1)*gap;
+  const ox=(W-gridW)/2;
+  items.forEach((item,i)=>{
+    const col=i%cols,row=Math.floor(i/cols);
+    const cx2=ox+col*(cardW+gap),cy2=gridTop+row*(cardH+gap);
+    let ownedArr,selectedId;
+    if(category==='hat'){ownedArr=save.owned;selectedId=save.hat;}
+    else if(category==='skin'){ownedArr=save.ownedSkins;selectedId=save.skin||'standard';}
+    else{ownedArr=save.ownedClothing;selectedId=save.clothing||'none';}
+    const owned=ownedArr.includes(item.id),selected=selectedId===item.id,afford=item.price===0||save.coins>=item.price;
     // Card
     ctx.fillStyle=selected?'#0d3d1a':owned?'#0d2d0d':afford?'#0d1a3d':'#1a0d0d';
-    ctx.beginPath(); ctx.roundRect(cx2,cy2,cardW,cardH,8); ctx.fill();
+    ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.fill();
     ctx.strokeStyle=selected?'#00e676':owned?'#4caf50':afford?'#2196f3':'#444';
-    ctx.lineWidth=2; ctx.beginPath(); ctx.roundRect(cx2,cy2,cardW,cardH,8); ctx.stroke();
-
-    // Mini head + hat preview
-    const hcx=cx2+cardW/2, hcy=cy2+58, hr=13;
-    ctx.fillStyle='#fff'; ctx.strokeStyle='#111'; ctx.lineWidth=1.5;
-    ctx.beginPath(); ctx.arc(hcx,hcy,hr,0,Math.PI*2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(hcx+4,hcy-2,2,0,Math.PI*2); ctx.fill();
-    if(hat.id!=='none'){
-      ctx.save();
-      ctx.translate(hcx,hcy); ctx.scale(1.4,1.4); ctx.translate(-hcx,-hcy);
-      drawHat(hcx,hcy,hr,hat.id);
-      ctx.restore();
-    }
-
+    ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(cx2,cy2,cardW,cardH,8);ctx.stroke();
+    // Mini figure preview
+    const mockP={dead:false,facing:1,walkCycle:0,landSquish:0,jumpStretch:0,lean:0,
+      onGround:true,jumpCount:0,vy:0,
+      hat:category==='hat'?item.id:(save.hat||'kinderhut'),
+      skin:category==='skin'?item.id:(save.skin||'standard'),
+      clothing:category==='clothing'?item.id:(save.clothing||'none')};
+    const fCX=cx2+cardW/2, fCY=cy2+16+PH/2;
+    ctx.save();
+    ctx.translate(fCX,fCY);ctx.scale(1.22,1.22);ctx.translate(-fCX,-fCY);
+    drawStickFigure(fCX-PW/2,cy2+16,mockP);
+    ctx.restore();
     // Name
-    ctx.fillStyle='#fff'; ctx.font='bold 13px Segoe UI,Arial'; ctx.textAlign='center';
-    ctx.fillText(hat.name,cx2+cardW/2,cy2+cardH-56);
-
-    // Price / status
-    if(hat.price===0){
-      ctx.fillStyle='#81c784'; ctx.font='11px Segoe UI,Arial';
-      ctx.fillText('Kostenlos',cx2+cardW/2,cy2+cardH-40);
-    } else if(owned){
-      ctx.fillStyle='#81c784'; ctx.font='11px Segoe UI,Arial';
-      ctx.fillText('Gekauft ✓',cx2+cardW/2,cy2+cardH-40);
-    } else {
-      ctx.fillStyle=afford?'#FFD700':'#ef9a9a'; ctx.font='12px Segoe UI,Arial';
-      ctx.fillText(`💰 ${hat.price} Münzen`,cx2+cardW/2,cy2+cardH-40);
-    }
-
-    // Action button
-    const bx2=cx2+10, by2=cy2+cardH-30, bw2=cardW-20, bh2=24;
-    let label,bg;
-    if(selected){label='✓ AUSGEWÄHLT';bg='#1b5e20';}
-    else if(owned){label='AUSWÄHLEN';bg='#2e7d32';}
-    else if(afford){label='KAUFEN';bg='#1565c0';}
-    else{label='ZU TEUER';bg='#333';}
-    ctx.fillStyle=bg; ctx.beginPath(); ctx.roundRect(bx2,by2,bw2,bh2,5); ctx.fill();
-    ctx.fillStyle=selected?'#aaa':'#fff'; ctx.font='bold 11px Segoe UI,Arial';
-    ctx.fillText(label,cx2+cardW/2,by2+16);
-
+    ctx.fillStyle='#fff';ctx.font='bold 11px Segoe UI,Arial';ctx.textAlign='center';
+    ctx.fillText(item.name,cx2+cardW/2,cy2+cardH-36);
+    // Price/status
+    if(item.price===0){ctx.fillStyle='#81c784';ctx.font='10px Segoe UI,Arial';ctx.fillText('Kostenlos',cx2+cardW/2,cy2+cardH-23);}
+    else if(owned){ctx.fillStyle='#81c784';ctx.font='10px Segoe UI,Arial';ctx.fillText('Gekauft ✓',cx2+cardW/2,cy2+cardH-23);}
+    else{ctx.fillStyle=afford?'#FFD700':'#ef9a9a';ctx.font='10px Segoe UI,Arial';ctx.fillText(`💰 ${item.price}`,cx2+cardW/2,cy2+cardH-23);}
+    // Button
+    const bx2=cx2+8,by2=cy2+cardH-18,bw2=cardW-16,bh2=16;
+    let lbl,bg2;
+    if(selected){lbl='✓ AKTIV';bg2='#1b5e20';}
+    else if(owned){lbl='AUSWÄHLEN';bg2='#2e7d32';}
+    else if(afford){lbl='KAUFEN';bg2='#1565c0';}
+    else{lbl='ZU TEUER';bg2='#37474f';}
+    ctx.fillStyle=bg2;ctx.beginPath();ctx.roundRect(bx2,by2,bw2,bh2,4);ctx.fill();
+    ctx.fillStyle=selected?'#aaa':'#fff';ctx.font='bold 9px Segoe UI,Arial';
+    ctx.fillText(lbl,cx2+cardW/2,by2+bh2/2+4);
     if(!selected){
       addBtn(bx2,by2,bw2,bh2,()=>{
-        if(owned){ save.hat=hat.id; writeSave(); }
-        else if(afford){ save.coins-=hat.price; save.owned.push(hat.id); save.hat=hat.id; writeSave(); }
+        if(owned){
+          if(category==='hat') save.hat=item.id;
+          else if(category==='skin') save.skin=item.id;
+          else save.clothing=item.id;
+          writeSave();
+        } else if(afford){
+          save.coins-=item.price;
+          if(category==='hat'){save.owned.push(item.id);save.hat=item.id;}
+          else if(category==='skin'){save.ownedSkins.push(item.id);save.skin=item.id;}
+          else{save.ownedClothing.push(item.id);save.clothing=item.id;}
+          writeSave();
+        }
       });
     }
   });
+}
 
-  // Back button
-  const backW=200,backH=44,backX=(W-200)/2,backY=H-58;
-  drawBtn(backX,backY,backW,backH,'← ZURÜCK','#37474f');
-  addBtn(backX,backY,backW,backH,()=>{ state='start'; });
-
+function drawShopScreen(){
+  uiTargets=[];
+  ctx.fillStyle='#0d1117';ctx.fillRect(0,0,W,H);
+  ctx.textAlign='center';
+  ctx.fillStyle='#FFD700';ctx.font='bold 30px Segoe UI,Arial';ctx.fillText('🏪  SHOP',W/2,38);
+  ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='16px Segoe UI,Arial';
+  ctx.fillText(`💰  ${save.coins} Münzen`,W/2,60);
+  // Tabs
+  const TABS=[{id:'hats',label:'👒 Hüte'},{id:'skins',label:'🎨 Skins'},{id:'clothing',label:'👕 Kleidung'}];
+  const tabW=240,tabH=30,tabGap=10;
+  const tx0=W/2-(3*tabW+2*tabGap)/2;
+  TABS.forEach((tab,i)=>{
+    const tx=tx0+i*(tabW+tabGap),ty=70;
+    const act=shopTab===tab.id;
+    ctx.fillStyle=act?'#1565c0':'#1e2a3a';
+    ctx.beginPath();ctx.roundRect(tx,ty,tabW,tabH,6);ctx.fill();
+    if(act){ctx.strokeStyle='#42a5f5';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(tx,ty,tabW,tabH,6);ctx.stroke();}
+    ctx.fillStyle=act?'#fff':'#777';ctx.font='bold 12px Segoe UI,Arial';
+    ctx.fillText(tab.label,tx+tabW/2,ty+tabH/2+4);
+    addBtn(tx,ty,tabW,tabH,()=>{shopTab=tab.id;});
+  });
+  // Grid (y=108, 2 rows of 148 + 10gap = 306, ends y=414, back btn at y=464)
+  if(shopTab==='hats')      drawShopGrid(HATS,    4,212,148,10,108,'hat');
+  else if(shopTab==='skins') drawShopGrid(SKINS,   4,212,148,10,108,'skin');
+  else                       drawShopGrid(CLOTHING, 3,290,148,14,108,'clothing');
+  // Back
+  const bkW=200,bkH=38,bkX=(W-200)/2,bkY=H-46;
+  drawBtn(bkX,bkY,bkW,bkH,'← ZURÜCK','#37474f');
+  addBtn(bkX,bkY,bkW,bkH,()=>{state='start';});
   ctx.textAlign='left';
 }
 
